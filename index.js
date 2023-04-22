@@ -1,24 +1,17 @@
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
+require("dotenv").config();
 
-const commands = [{
-  name: 'ping',
-  description: 'Replies with Pong!'
-}]; 
+// Require the necessary discord.js classes
+const { Client, Events, GatewayIntentBits } = require("discord.js");
+// const { token } = require("./config.json");
 
-const rest = new REST({ version: '9' }).setToken('token');
+// Create a new client instance
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-(async () => {
-  try {
-    console.log('Started refreshing application (/) commands.');
+// When the client is ready, run this code (only once)
+// We use 'c' for the event parameter to keep it separate from the already defined 'client'
+client.once(Events.ClientReady, (c) => {
+  console.log(`Ready! Logged in as ${c.user.tag}`);
+});
 
-    await rest.put(
-      Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID),
-      { body: commands },
-    );
-
-    console.log('Successfully reloaded application (/) commands.');
-  } catch (error) {
-    console.error(error);
-  }
-})();
+// Log in to Discord with your client's token
+client.login(process.env.DISCORD_KEY);

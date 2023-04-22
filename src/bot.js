@@ -1,16 +1,15 @@
-const { Client, Intents } = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+// Require the necessary discord.js classes
+const { Client, Events, GatewayIntentBits } = require("discord.js");
+const { token } = require("./config.json");
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+// Create a new client instance
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+// When the client is ready, run this code (only once)
+// We use 'c' for the event parameter to keep it separate from the already defined 'client'
+client.once(Events.ClientReady, (c) => {
+  console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isCommand()) return;
-
-  if (interaction.commandName === 'ping') {
-    await interaction.reply('Pong!');
-  }
-});
-
-client.login('token');
+// Log in to Discord with your client's token
+client.login(process.env.DISCORD_KEY);
